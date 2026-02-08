@@ -1,0 +1,61 @@
+body {
+  font-family: system-ui, sans-serif;
+  background: #0f172a;
+  color: white;
+}
+
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+}
+
+.card {
+  background: #1e293b;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.event {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+button {
+  background: #2563eb;
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 10px;
+}
+
+.seat {
+  background: #22c55e;
+}
+
+.booked {
+  background: #475569;
+  cursor: not-allowed;
+}
+.seat.selected {
+  background: #facc15;
+}
+
+.book-btn {
+  margin-top: 15px;
+  width: 100%;
+  padding: 10px;
+  background: #16a34a;
+  border: none;
+  color: white;
+  border-radius: 6px;
+}
