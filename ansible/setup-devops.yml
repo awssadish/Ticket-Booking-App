@@ -1,0 +1,9 @@
+---
+- name: Setup Jenkins, Docker, kubectl, Minikube
+  hosts: jenkins
+  become: yes
+  roles:
+    - role: ../roles/docker
+    - role: ../roles/jenkins
+    - role: ../roles/kubectl
+    - role: ../roles/minikube

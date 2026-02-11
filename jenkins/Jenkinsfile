@@ -3,8 +3,8 @@ pipeline {
 
     environment {
         DOCKERHUB_USER = "sadishdocker"
-        BACKEND_IMAGE  = "${DOCKERHUB_USER}/app-backend"
-        FRONTEND_IMAGE = "${DOCKERHUB_USER}/app-frontend"
+        BACKEND_IMAGE  = "${DOCKERHUB_USER}/three-tier-backend"
+        FRONTEND_IMAGE = "${DOCKERHUB_USER}/three-tier-frontend"
         IMAGE_TAG      = "${BUILD_NUMBER}"
     }
 
@@ -81,4 +81,6 @@ pipeline {
             echo "❌ CI pipeline failed"
         }
     }
+}
 
+ 
