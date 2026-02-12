@@ -1,5 +1,6 @@
 ---
 - name: Download kubectl
+  become: yes
   get_url:
     url: https://dl.k8s.io/release/v1.29.0/bin/linux/amd64/kubectl
     dest: /usr/local/bin/kubectl
@@ -8,6 +9,7 @@
 # ---------------- Jenkins Kubernetes Access ----------------
 
 - name: Create .kube directory for Jenkins
+  become: yes
   file:
     path: /var/lib/jenkins/.kube
     state: directory
@@ -16,6 +18,7 @@
     mode: '0755'
 
 - name: Copy kubeconfig to Jenkins
+  become: yes
   copy:
     src: /home/ubuntu/.kube/config
     dest: /var/lib/jenkins/.kube/config

@@ -1,17 +1,32 @@
 ---
 - name: Install conntrack
+  become: yes
   apt:
     name: conntrack
     state: present
+    update_cache: yes
 
 - name: Download Minikube
+  become: yes
   get_url:
     url: https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
     dest: /usr/local/bin/minikube
     mode: '0755'
 
+- name: Ensure .kube directory exists for ubuntu
+  become: yes
+  file:
+    path: /home/ubuntu/.kube
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: '0755'
+
 - name: Start Minikube using Docker driver
+  become: yes
   become_user: ubuntu
+  environment:
+    HOME: /home/ubuntu
   command: minikube start --driver=docker
   args:
     creates: /home/ubuntu/.kube/config
