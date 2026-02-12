@@ -4,3 +4,22 @@
     url: https://dl.k8s.io/release/v1.29.0/bin/linux/amd64/kubectl
     dest: /usr/local/bin/kubectl
     mode: '0755'
+
+# ---------------- Jenkins Kubernetes Access ----------------
+
+- name: Create .kube directory for Jenkins
+  file:
+    path: /var/lib/jenkins/.kube
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: '0755'
+
+- name: Copy kubeconfig to Jenkins
+  copy:
+    src: /home/ubuntu/.kube/config
+    dest: /var/lib/jenkins/.kube/config
+    owner: jenkins
+    group: jenkins
+    mode: '0644'
+    remote_src: yes

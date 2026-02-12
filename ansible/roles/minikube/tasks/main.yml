@@ -1,5 +1,5 @@
 ---
-- name: Install conntrack (required for Minikube)
+- name: Install conntrack
   apt:
     name: conntrack
     state: present
@@ -9,3 +9,9 @@
     url: https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
     dest: /usr/local/bin/minikube
     mode: '0755'
+
+- name: Start Minikube using Docker driver
+  become_user: ubuntu
+  command: minikube start --driver=docker
+  args:
+    creates: /home/ubuntu/.kube/config

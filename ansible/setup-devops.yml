@@ -3,7 +3,9 @@
   hosts: jenkins
   become: yes
   roles:
-    - role: ../roles/docker
     - role: ../roles/jenkins
+    - role: ../roles/docker
     - role: ../roles/kubectl
     - role: ../roles/minikube
+    
+    

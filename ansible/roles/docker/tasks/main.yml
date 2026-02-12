@@ -1,12 +1,9 @@
 ---
-- name: Update apt cache
-  apt:
-    update_cache: yes
-
 - name: Install docker.io
   apt:
     name: docker.io
     state: present
+    update_cache: yes
 
 - name: Start Docker service
   service:
@@ -19,3 +16,14 @@
     name: ubuntu
     groups: docker
     append: yes
+
+- name: Add jenkins user to docker group
+  user:
+    name: jenkins
+    groups: docker
+    append: yes
+
+- name: Restart Jenkins to apply docker permission
+  service:
+    name: jenkins
+    state: restarted
