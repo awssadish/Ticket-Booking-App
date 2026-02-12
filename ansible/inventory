@@ -1,6 +1,0 @@
-[jenkins]
-
-3.80.143.209 ansible_user=ubuntu ansible_ssh_private_key_file=~/.cicd/cicd.pem
-
-
-
