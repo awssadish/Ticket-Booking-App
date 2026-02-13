@@ -67,17 +67,32 @@ pipeline {
             }
         }
 
-        stage('Verify Deployment') {
+        stage('Deploy to Kubernetes (Minikube)') {
             steps {
                 sh """
-                   set -e
-                   kubectl rollout status deployment/backend
-                   kubectl rollout status deployment/frontend
-                   kubectl get pods
-                   kubectl get svc
+                set -e
+                kubectl apply -f k8s/
+                
+                kubectl set image deployment/backend backend=${BACKEND_IMAGE}:${IMAGE_TAG}
+                kubectl set image deployment/frontend frontend=${FRONTEND_IMAGE}:${IMAGE_TAG}
                 """
             }
         }
+
+        stage('Verify Deployment') {
+            steps {
+                sh """
+                set -e
+                
+                kubectl rollout status deployment/backend
+                kubectl rollout status deployment/frontend
+
+                kubectl get pods
+                kubectl get svc
+                """
+            }
+        }
+
     }
 
     post {
