@@ -8,8 +8,11 @@ pipeline {
 
     environment {
         DOCKERHUB_USER = "sadishaws"
-        BACKEND_IMAGE  = "${DOCKERHUB_USER}/ticket-booking-app-frontend"
-        FRONTEND_IMAGE = "${DOCKERHUB_USER}/ticket-booking-app-backend"
+
+        // ✅ Correct image mapping
+        BACKEND_IMAGE  = "${DOCKERHUB_USER}/ticket-booking-app-backend"
+        FRONTEND_IMAGE = "${DOCKERHUB_USER}/ticket-booking-app-frontend"
+
         IMAGE_TAG      = "${BUILD_NUMBER}"
     }
 
@@ -21,9 +24,11 @@ pipeline {
                     url: 'https://github.com/awssadish/Ticket-Booking-App.git'
             }
         }
+
         stage('Build Docker Images') {
             steps {
                 sh """
+                  set -e
                   docker build -t ${BACKEND_IMAGE}:${IMAGE_TAG} app/backend
                   docker build -t ${FRONTEND_IMAGE}:${IMAGE_TAG} app/frontend
                 """
@@ -55,6 +60,7 @@ pipeline {
         stage('Deploy to Kubernetes (Minikube)') {
             steps {
                 sh """
+                  set -e
                   kubectl set image deployment/backend backend=${BACKEND_IMAGE}:${IMAGE_TAG} --record
                   kubectl set image deployment/frontend frontend=${FRONTEND_IMAGE}:${IMAGE_TAG} --record
                 """
@@ -64,6 +70,7 @@ pipeline {
         stage('Verify Deployment') {
             steps {
                 sh """
+                   set -e
                    kubectl rollout status deployment/backend
                    kubectl rollout status deployment/frontend
                    kubectl get pods
