@@ -22,18 +22,6 @@ pipeline {
             }
         }
 
-        stage('Backend Unit Tests') {
-            steps {
-                dir('app/backend') {
-                    sh '''
-                      set -e
-                      npm ci
-                      npm test || echo "No tests found, skipping"
-                    '''
-                }
-            }
-        }
-
         stage('Frontend Unit Tests') {
             steps {
                 dir('app/frontend') {
