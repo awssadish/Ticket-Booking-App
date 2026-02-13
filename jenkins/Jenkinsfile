@@ -56,17 +56,6 @@ pipeline {
                 }
             }
         }
-
-        stage('Deploy to Kubernetes (Minikube)') {
-            steps {
-                sh """
-                  set -e
-                  kubectl set image deployment/backend backend=${BACKEND_IMAGE}:${IMAGE_TAG} --record
-                  kubectl set image deployment/frontend frontend=${FRONTEND_IMAGE}:${IMAGE_TAG} --record
-                """
-            }
-        }
-
         stage('Deploy to Kubernetes (Minikube)') {
             steps {
                 sh """
