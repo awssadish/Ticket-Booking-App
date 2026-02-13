@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Login from "./auth/login";
+import Login from "./auth/Login";
 import Signup from "./auth/Signup";
 import TicketApp from "./TicketApp";
 
