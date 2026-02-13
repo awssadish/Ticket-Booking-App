@@ -7,9 +7,9 @@ pipeline {
     }
 
     environment {
-        DOCKERHUB_USER = "sadishdocker"
-        BACKEND_IMAGE  = "${DOCKERHUB_USER}/three-tier-backend"
-        FRONTEND_IMAGE = "${DOCKERHUB_USER}/three-tier-frontend"
+        DOCKERHUB_USER = "sadishaws"
+        BACKEND_IMAGE  = "${DOCKERHUB_USER}/ticket-booking-app-frontend"
+        FRONTEND_IMAGE = "${DOCKERHUB_USER}/ticket-booking-app-backend"
         IMAGE_TAG      = "${BUILD_NUMBER}"
     }
 
@@ -18,7 +18,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/sadish2006/Three-tier-application-Resume.git'
+                    url: 'https://github.com/awssadish/Ticket-Booking-App.git'
             }
         }
 
