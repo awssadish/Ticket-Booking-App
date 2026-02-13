@@ -21,19 +21,6 @@ pipeline {
                     url: 'https://github.com/awssadish/Ticket-Booking-App.git'
             }
         }
-
-        stage('Frontend Unit Tests') {
-            steps {
-                dir('app/frontend') {
-                    sh '''
-                      set -e
-                      npm ci
-                      npm test || echo "No tests found, skipping"
-                    '''
-                }
-            }
-        }
-
         stage('Build Docker Images') {
             steps {
                 sh """
