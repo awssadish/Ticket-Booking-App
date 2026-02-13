@@ -23,6 +23,10 @@
     groups: docker
     append: yes
 
+# 🔥 VERY IMPORTANT: refresh SSH session so docker group applies
+- name: Reset SSH connection to apply docker group changes
+  meta: reset_connection
+
 - name: Restart Jenkins to apply docker permission
   service:
     name: jenkins
