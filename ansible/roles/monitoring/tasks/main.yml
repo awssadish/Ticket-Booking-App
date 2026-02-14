@@ -31,16 +31,8 @@
   command: >
     helm install monitoring prometheus-community/kube-prometheus-stack
     --namespace monitoring
-  args:
-    creates: /tmp/monitoring-installed
   register: monitoring_install
   failed_when: false
-
-- name: Mark monitoring installed
-  become: yes
-  file:
-    path: /tmp/monitoring-installed
-    state: touch
 
 # ---------------- Expose Grafana via NodePort ----------------
 - name: Patch Grafana service to NodePort
@@ -49,7 +41,7 @@
     kubectl patch svc monitoring-grafana -n monitoring \
     -p '{"spec":{"type":"NodePort"}}'
 
-# ---------------- Show Grafana Access Info ----------------
+# ---------------- Get Grafana NodePort ----------------
 - name: Get Grafana NodePort
   become: yes
   shell: |
@@ -57,7 +49,18 @@
     -o jsonpath='{.spec.ports[0].nodePort}'
   register: grafana_port
 
+# ---------------- Get Grafana Admin Password ----------------
+- name: Get Grafana admin password
+  become: yes
+  shell: |
+    kubectl get secret monitoring-grafana -n monitoring \
+    -o jsonpath="{.data.admin-password}" | base64 --decode
+  register: grafana_password
+
+# ---------------- Show Access Details ----------------
 - name: Show Grafana Access Details
   debug:
     msg:
-      - "Grafana URL
+      - "Grafana URL: http://<EC2_PUBLIC_IP>:{{ grafana_port.stdout }}"
+      - "Grafana Username: admin"
+      - "Grafana Password: {{ grafana_password.stdout }}"
