@@ -10,57 +10,54 @@
 # ---------------- Add Prometheus Helm Repo ----------------
 - name: Add Prometheus Helm repository
   become: yes
+  environment:
+    KUBECONFIG: /home/ubuntu/.kube/config
   command: helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-  register: helm_repo
   failed_when: false
 
 - name: Update Helm repositories
   become: yes
+  environment:
+    KUBECONFIG: /home/ubuntu/.kube/config
   command: helm repo update
 
-# ---------------- Create Monitoring Namespace ----------------
+# ---------------- Create Namespace ----------------
 - name: Create monitoring namespace
   become: yes
+  environment:
+    KUBECONFIG: /home/ubuntu/.kube/config
   command: kubectl create namespace monitoring
-  register: ns_create
   failed_when: false
 
-# ---------------- Install Prometheus + Grafana ----------------
+# ---------------- Install Prometheus Stack ----------------
 - name: Install kube-prometheus-stack
   become: yes
+  environment:
+    KUBECONFIG: /home/ubuntu/.kube/config
   command: >
     helm install monitoring prometheus-community/kube-prometheus-stack
     --namespace monitoring
-  register: monitoring_install
   failed_when: false
 
-# ---------------- Expose Grafana via NodePort ----------------
+# ---------------- Patch Grafana Service ----------------
 - name: Patch Grafana service to NodePort
   become: yes
-  shell: |
-    kubectl patch svc monitoring-grafana -n monitoring \
+  environment:
+    KUBECONFIG: /home/ubuntu/.kube/config
+  command: >
+    kubectl patch svc monitoring-grafana -n monitoring
     -p '{"spec":{"type":"NodePort"}}'
 
-# ---------------- Get Grafana NodePort ----------------
+# ---------------- Get Grafana Port ----------------
 - name: Get Grafana NodePort
   become: yes
-  shell: |
-    kubectl get svc monitoring-grafana -n monitoring \
+  environment:
+    KUBECONFIG: /home/ubuntu/.kube/config
+  shell: >
+    kubectl get svc monitoring-grafana -n monitoring
     -o jsonpath='{.spec.ports[0].nodePort}'
   register: grafana_port
 
-# ---------------- Get Grafana Admin Password ----------------
-- name: Get Grafana admin password
-  become: yes
-  shell: |
-    kubectl get secret monitoring-grafana -n monitoring \
-    -o jsonpath="{.data.admin-password}" | base64 --decode
-  register: grafana_password
-
-# ---------------- Show Access Details ----------------
-- name: Show Grafana Access Details
+- name: Show Grafana URL
   debug:
-    msg:
-      - "Grafana URL: http://<EC2_PUBLIC_IP>:{{ grafana_port.stdout }}"
-      - "Grafana Username: admin"
-      - "Grafana Password: {{ grafana_password.stdout }}"
+    msg: "Grafana URL: http://<EC2_PUBLIC_IP>:{{ grafana_port.stdout }}"
