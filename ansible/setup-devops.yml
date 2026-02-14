@@ -7,5 +7,5 @@
     - role: ../roles/docker
     - role: ../roles/minikube
     - role: ../roles/kubectl
-    
+    - role: ../roles/monitoring
     
