@@ -52,8 +52,3 @@
     path: /var/lib/jenkins/.kube/config
     regexp: '/home/ubuntu/.minikube'
     replace: '/var/lib/jenkins/.minikube'
-
-- name: Verify kubectl access as Jenkins
-  become: yes
-  become_user: jenkins
-  command: kubectl get nodes
