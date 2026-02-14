@@ -8,10 +8,19 @@
 
 # ---------------- Jenkins Kubernetes Access ----------------
 
-- name: Create .kube directory for Jenkins
+- name: Ensure Jenkins .kube directory exists
   become: yes
   file:
     path: /var/lib/jenkins/.kube
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: '0755'
+
+- name: Ensure Jenkins .minikube directory exists
+  become: yes
+  file:
+    path: /var/lib/jenkins/.minikube
     state: directory
     owner: jenkins
     group: jenkins
@@ -26,3 +35,25 @@
     group: jenkins
     mode: '0644'
     remote_src: yes
+
+- name: Copy Minikube certificates to Jenkins
+  become: yes
+  copy:
+    src: /home/ubuntu/.minikube/
+    dest: /var/lib/jenkins/.minikube/
+    owner: jenkins
+    group: jenkins
+    mode: '0755'
+    remote_src: yes
+
+- name: Update kubeconfig certificate paths for Jenkins
+  become: yes
+  replace:
+    path: /var/lib/jenkins/.kube/config
+    regexp: '/home/ubuntu/.minikube'
+    replace: '/var/lib/jenkins/.minikube'
+
+- name: Verify kubectl access as Jenkins
+  become: yes
+  become_user: jenkins
+  command: kubectl get nodes
