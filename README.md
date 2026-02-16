@@ -3,7 +3,6 @@
 This project demonstrates a production-level DevOps CI/CD pipeline using:
 
 - AWS (EC2)
-- Terraform
 - Ansible
 - Jenkins
 - Docker & Docker Hub
