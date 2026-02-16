@@ -166,9 +166,9 @@ Step 4: Monitoring Setup
 
 🧠 Key Learnings
 
-End-to-end DevOps workflow implementation
-Infrastructure as Code and configuration management
-CI/CD pipeline automation
-Kubernetes deployment strategies
-Monitoring and observability concepts
-Production-like DevOps setup on cloud infrastructure
+      End-to-end DevOps workflow implementation
+      Infrastructure as Code and configuration management
+      CI/CD pipeline automation
+      Kubernetes deployment strategies
+      Monitoring and observability concepts
+      Production-like DevOps setup on cloud infrastructure
